@@ -1,75 +1,98 @@
-import moment from 'moment'
-import { getFilters } from './filters'
-import { sortNotes, getNotes } from './notes'
+import { getfilters } from './filters';
+import { getRecipe } from  './recipe'
 
-// Generate the DOM structure for a note
-const generateNoteDOM = (note) => {
-    const noteEl = document.createElement('a')
+
+// Generate the DOM stucture for a recipe 
+const generateRecipeDOM = (recipeData) => {
+    const recipeEl = document.createElement('a')
     const textEl = document.createElement('p')
-    const statusEl = document.createElement('p')
+    const statusEl =  document.createElement('p')
 
-    // Setup the note title text
-    if (note.title.length > 0) {
-        textEl.textContent = note.title
+    // Setup the recipe title text
+    if (recipeData.description.length > 0) {
+        textEl.textContent = recipeData.description
     } else {
-        textEl.textContent = 'Unnamed note'
+        textEl.textContent = 'Unnamed recipe'
     }
     textEl.classList.add('list-item__title')
-    noteEl.appendChild(textEl)
+    recipeEl.appendChild(textEl)
 
     // Setup the link
-    noteEl.setAttribute('href', `/edit.html#${note.id}`)
-    noteEl.classList.add('list-item')
+    recipeEl.setAttribute(`href`,`./edit.html#${recipeData.id}`)
+    recipeEl.classList.add('list-item')
 
     // Setup the status message
-    statusEl.textContent = generateLastEdited(note.updatedAt)
+    statusEl.textContent = generateSummary(recipeData)
     statusEl.classList.add('list-item__subtitle')
-    noteEl.appendChild(statusEl)
+    recipeEl.appendChild(statusEl)
 
-    return noteEl
+    return recipeEl
 }
 
-// Render application notes
-const renderNotes = () => {
-    const notesEl = document.querySelector('#notes')
-    const filters = getFilters()
-    const notes = sortNotes(filters.sortBy)
-    const filteredNotes = notes.filter((note) => note.title.toLowerCase().includes(filters.searchText.toLowerCase()))
 
-    notesEl.innerHTML = ''
 
-    if (filteredNotes.length > 0) {
-        filteredNotes.forEach((note) => {
-            const noteEl = generateNoteDOM(note)
-            notesEl.appendChild(noteEl)
-        })
+// Render Application recipe
+const renderRecipes = () => {
+    const recipesEl = document.querySelector('#recipe')
+    const filters = getfilters()
+    const recipes = getRecipe()
+    // Search function
+    let filteredRecipes = recipes.filter((recipe) => {
+        return recipe.description.toLowerCase().includes(filters.searchText.toLowerCase())
+    })
+    // clear search 
+    recipesEl.innerHTML = ''
+    
+
+
+    if (filteredRecipes.length > 0 ) {
+        filteredRecipes.forEach((recipeData) => {
+            const recipeEl = generateRecipeDOM(recipeData)
+            recipesEl.appendChild(recipeEl)
+      })
     } else {
         const emptyMessage = document.createElement('p')
-        emptyMessage.textContent = 'No notes to show'
         emptyMessage.classList.add('empty-message')
-        notesEl.appendChild(emptyMessage)
+        emptyMessage.textContent = 'No recipe to show'
+        recipesEl.appendChild(emptyMessage)
     }
 }
 
-const initializeEditPage = (noteId) => {
-    const titleElement = document.querySelector('#note-title')
-    const bodyElement = document.querySelector('#note-body')
-    const dateElement = document.querySelector('#last-edited')
-    const notes = getNotes()
-    const note = notes.find((note) => note.id === noteId)
 
-    if (!note) {
-        location.assign('/index.html')
+// Generate edit page
+const initializeEditPage = (recipesId) => {
+    const recipeDescriptionEl = document.querySelector('#recipe-description')
+    const recipeStepsEl = document.querySelector('#recipe-steps')
+    const recipes = getRecipe()
+    const recipe = recipes.find((recipe) => recipe.id === recipesId);
+
+    if (!recipe) {
+        location.assign(`./index.html`)
     }
 
-    titleElement.value = note.title
-    bodyElement.value = note.body
-    dateElement.textContent = generateLastEdited(note.updatedAt)
+
+    recipeDescriptionEl.value = recipe.description
+    recipeStepsEl.value = recipe.steps
+}
+// Generate Summary 
+
+const generateSummary = (recipe) => {
+    let count = 0
+    let numberOfIngredients =  recipe.ingredients.length
+    recipe.ingredients.forEach((ingredient) => {
+       if (ingredient.hasStatus === true) {
+            count++
+       }
+    }) 
+
+    if (count === 0) {
+        return 'You have none of the ingredients'
+    } else if (count === numberOfIngredients) {
+        return 'You have all of the ingredients'
+    } else {
+        return 'You have some of the ingredients'
+    }
 }
 
-// Generate the last edited message
-const generateLastEdited = (timestamp) => {
-    return `Last edited ${moment(timestamp).fromNow()}`
-}
 
-export { generateNoteDOM, renderNotes, generateLastEdited, initializeEditPage}
+export { generateRecipeDOM, renderRecipes, generateSummary, initializeEditPage }

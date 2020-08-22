@@ -1,30 +1,25 @@
-import { createNote } from './notes'
-import { setFilters } from './filters'
-import { renderNotes } from './views'
+import {  createRecipe } from './recipe';
+import { setFilters  } from './filters';
+import { renderRecipes } from './views';
 
-renderNotes()
+renderRecipes()
 
-document.querySelector('#create-note').addEventListener('click', (e) => {
-    const id = createNote()
-    location.assign(`/edit.html#${id}`)
-})
+document.querySelector('#create-recipe').addEventListener('click', ((e) => {
+    const id = createRecipe()
+    location.assign(`./edit.html#${id}`)
+}))
 
-document.querySelector('#search-text').addEventListener('input', (e) => {
+
+document.querySelector('#search-recipe').addEventListener('input', ((e) => {
     setFilters({
         searchText: e.target.value
     })
-    renderNotes()
-})
+    renderRecipes()
+}))
 
-document.querySelector('#filter-by').addEventListener('change', (e) => {
-    setFilters({
-        sortBy: e.target.value
-    })
-    renderNotes()
-})
 
-window.addEventListener('storage', (e) => {
-    if (e.key === 'notes') {
-        renderNotes()
+window.addEventListener('storage', ((e) => {
+    if (e.key === 'recipes') {
+        renderRecipes()
     }
-})
+}))

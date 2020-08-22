@@ -1,35 +1,51 @@
-import { initializeEditPage, generateLastEdited } from './views'
-import { updateNote, removeNote } from './notes'
+import { initializeEditPage } from './views';
+import { createIngredient, renderIngredient } from './ingredient';
+import { updateRecipe, removeRecipe } from './recipe';
 
-const titleElement = document.querySelector('#note-title')
-const bodyElement = document.querySelector('#note-body')
-const removeElement = document.querySelector('#remove-note')
-const dateElement = document.querySelector('#last-edited')
-const noteId = location.hash.substring(1)
 
-initializeEditPage(noteId)
+const recipeDescriptionEl = document.querySelector('#recipe-description')
+const recipeStepsEl = document.querySelector('#recipe-steps')
+const formIngredients = document.querySelector('#form-ingredients')
+const removeElement = document.querySelector('#remove-recipe')
+const recipesId = location.hash.substring(1)
 
-titleElement.addEventListener('input', (e) => {
-    const note = updateNote(noteId, {
-        title: e.target.value
+initializeEditPage(recipesId)
+
+
+recipeDescriptionEl.addEventListener('input', ((e) => {
+    updateRecipe(recipesId, {
+        description: e.target.value
     })
-    dateElement.textContent = generateLastEdited(note.updatedAt)
-})
+}))
 
-bodyElement.addEventListener('input', (e) => {
-    const note = updateNote(noteId, {
-        body: e.target.value
+recipeStepsEl.addEventListener('input', ((e) => {
+    updateRecipe(recipesId, {
+        steps: e.target.value
     })
-    dateElement.textContent = generateLastEdited(note.updatedAt)
-})
+}))
 
-removeElement.addEventListener('click', (e) => {
-    removeNote(noteId)
-    location.assign('/index.html')
-})
+removeElement.addEventListener('click', ((e) => {
+    removeRecipe(recipesId)
+    location.assign(`./index.html`)
+}))
 
-window.addEventListener('storage', (e) => {
-    if (e.key === 'notes') {
-        initializeEditPage(noteId)
+
+formIngredients.addEventListener('submit', ((e) => {
+    e.preventDefault()
+    const text = e.target.elements.enterIngredient.value.trim()
+    
+    if (text.length > 0) {
+        createIngredient(recipesId, text)
+        renderIngredient(recipesId)
+        e.target.elements.enterIngredient.value = ''
     }
-})
+}))
+
+
+
+
+window.addEventListener('storage', ((e) => {
+    if (e.key === 'recipes') {
+        initializeEditPage(recipesId)
+    }
+}))

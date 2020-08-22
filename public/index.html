@@ -2,34 +2,27 @@
 
 <html>
     <head>
-      <title>notesApp</title>
-      <link href="styles/styles.css" rel="stylesheet" >
-      <link href="/images/note.png?>=1" rel="icon">
+            <link rel="stylesheet" href="styles/styles.css"> 
+        <title>Recipe App</title>
     </head>
-    <body> 
+    <body>
         <header class="header">
-           <div class="container">
-                <h1 class="header__title">Notes App</h1>
-                <h2 class="header__subtitle">Take notes and never forget</h2>
-           </div>
+            <div class="container">
+                <h1 class="header__title">Recipe App</h1>
+                <h2 class="header__subtitle">Discorver new recipes every day</h2>
+            </div>  
         </header>
-      
-
         <div class="actions">
             <div class="actions__container">
-                <input id="search-text" type="text" class="input" placeholder="Filter notes">
-                <select id="filter-by" class="dropdown">
-                    <option value="byEdited">Sort by last edited</option>
-                    <option value="byCreated">Sort by recently created</option>
-                    <option value="alphabetical">Sort alphabetically</option>
-                </select>
-
+                <input id="search-recipe" type="text" class="input" placeholder="search recipe..." />
             </div>
         </div>
-        <div class="container">  
-            <div id="notes"></div>
-            <button id="create-note" class="button">Create Note</button>  
-        </div>        
-            
+        <div class="bg">
+            <div class="container">
+                <div id="recipe"></div>
+                <button class="button" id="create-recipe">Add Recipe</button>
+            </div>
+        </div>
         <script src="./scripts/index-bundle.js"></script>
     </body>
+</html>
