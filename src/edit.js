@@ -1,6 +1,6 @@
 import { initializeEditPage } from './views';
 import { createIngredient, renderIngredient } from './ingredient';
-import { updateRecipe, removeRecipe } from './recipe';
+import { updateRecipe, removeRecipe, saveRecipes } from './recipe';
 
 
 const recipeDescriptionEl = document.querySelector('#recipe-description')
@@ -10,7 +10,7 @@ const removeElement = document.querySelector('#remove-recipe')
 const recipesId = location.hash.substring(1)
 
 initializeEditPage(recipesId)
-
+renderIngredient(recipesId)
 
 recipeDescriptionEl.addEventListener('input', ((e) => {
     updateRecipe(recipesId, {
@@ -29,16 +29,15 @@ removeElement.addEventListener('click', ((e) => {
     location.assign(`./index.html`)
 }))
 
-
 formIngredients.addEventListener('submit', ((e) => {
-    e.preventDefault()
     const text = e.target.elements.enterIngredient.value.trim()
+    e.preventDefault()
     
     if (text.length > 0) {
         createIngredient(recipesId, text)
-        renderIngredient(recipesId)
+        e.target.elements.enterIngredient.value = ''
     }
-    e.target.elements.enterIngredient.value = ''
+    renderIngredient(recipesId)
 }))
 
 

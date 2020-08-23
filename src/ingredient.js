@@ -1,6 +1,9 @@
 import uuidv4 from 'uuid/v4';
 import { getRecipe, saveRecipes } from './recipe';
 
+
+
+
 // Create ingredient 
 const createIngredient = (recipesId, text) => {
     const recipes = getRecipe()
@@ -9,11 +12,10 @@ const createIngredient = (recipesId, text) => {
     const id = uuidv4() 
     recipe.ingredients.push({
         id: id,
-        text: text,
+        text,
         hasStatus: false
     })
     saveRecipes()
-    
 }
 
 // remove Ingredient
@@ -21,13 +23,13 @@ const removeIngredient = (id, recipesId) => {
     const recipes = getRecipe()
     const recipe =  recipes.find((recipe) => recipe.id === recipesId)
     const ingredients = recipe.ingredients
-    
     const ingredientsIndex = ingredients.findIndex((data) => data.id === id)
     
     if (ingredientsIndex > -1) {
         ingredients.splice(ingredientsIndex, 1)
     }
     saveRecipes()
+
 }
 
 // check Ingredient
@@ -39,8 +41,10 @@ const checkIngredient = (id, recipesId) => {
     
     if (checkedIngredient) {
         checkedIngredient.hasStatus = !checkedIngredient.hasStatus
+        
     }
     saveRecipes()
+   
 }
 
 
@@ -58,9 +62,10 @@ const renderIngredient = (recipesId) => {
     } else {
         const emptyMessage = document.createElement('p')
         emptyMessage.classList.add('empty-message')
-        emptyMessage.textContent = 'No recipe to show'
+        emptyMessage.textContent = 'No ingredient to show'
         ingredientEl.appendChild(emptyMessage)
     }
+  
     saveRecipes()
 }
 
