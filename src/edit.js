@@ -37,8 +37,8 @@ formIngredients.addEventListener('submit', ((e) => {
     if (text.length > 0) {
         createIngredient(recipesId, text)
         renderIngredient(recipesId)
-        e.target.elements.enterIngredient.value = ''
     }
+    e.target.elements.enterIngredient.value = ''
 }))
 
 

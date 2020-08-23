@@ -31,6 +31,12 @@ a {
   padding: 0 1.6rem;
 }
 
+.container-remove {
+  max-width: 60rem;
+  margin: 1rem auto;
+  padding: 1rem 1.6rem;
+}
+
 /* Header */
 
 .header {

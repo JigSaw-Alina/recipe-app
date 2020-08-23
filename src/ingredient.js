@@ -13,6 +13,7 @@ const createIngredient = (recipesId, text) => {
         hasStatus: false
     })
     saveRecipes()
+    
 }
 
 // remove Ingredient
@@ -56,7 +57,7 @@ const renderIngredient = (recipesId) => {
         })
     } else {
         const emptyMessage = document.createElement('p')
-    
+        emptyMessage.classList.add('empty-message')
         emptyMessage.textContent = 'No recipe to show'
         ingredientEl.appendChild(emptyMessage)
     }
